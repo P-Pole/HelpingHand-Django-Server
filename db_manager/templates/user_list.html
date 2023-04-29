@@ -1,0 +1,39 @@
+
+
+{% extends 'base.html' %} {% block content %}
+<h1>User List</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Email</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Liked Charities</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for user in users %}
+    <tr>
+      <td>{{ user.email }}</td>
+      <td>{{ user.first_name }}</td>
+      <td>{{ user.last_name }}</td>
+      <td>
+        {% for charity in user.liked_charities.all %}
+          {{ charity.name }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+      </td>
+      <td>
+        <a href="{% url 'user_edit' user.id %}">Edit</a>
+        <a href="{% url 'delete_user' user.id %}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h2>{% if form.instance.pk %}Edit{% else %}Add{% endif %} User</h2>
+<form method="post">
+  {% csrf_token %} {{ form.as_table }}
+  <button type="submit">Save</button>
+</form>
+{% endblock %}

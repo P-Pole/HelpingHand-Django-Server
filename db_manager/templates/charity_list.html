@@ -1,0 +1,44 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Charity List</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Phone Number</th>
+      <th>Address</th>
+      <th>Certificates</th>
+      <th>Confirmed</th>
+      <th>Image</th>
+      <th>Description</th>
+      <th>Full Description</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for charity in charities %}
+    <tr>
+      <td>{{ charity.name }}</td>
+      <td>{{ charity.email }}</td>
+      <td>{{ charity.phone_no }}</td>
+      <td>{{ charity.address }}</td>
+      <td>{{ charity.certificates }}</td>
+      <td>{{ charity.confirmed }}</td>
+      <td>{{ charity.image_url }}</td>
+      <td>{{ charity.description }}</td>
+      <td>{{ charity.full_description }}</td>
+      <td>
+        <a href="{% url 'charity_edit' charity.id %}">Edit</a>
+        <a href="{% url 'delete_charity' charity.id %}">Delete</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<h2>{% if form.instance.pk %}Edit{% else %}Add{% endif %} Charity</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_ul }}
+  <button type="submit">Save</button>
+</form>
+{% endblock %}
